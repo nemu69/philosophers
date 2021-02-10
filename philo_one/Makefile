@@ -5,7 +5,7 @@
 # **************************************************************************** #
 NAME = philo_one
 # Libft ASM project files
-FILE_SRC = philo_one.c ft_parse.c
+FILE_SRC = philo_one.c ft_parse.c utils.c ft_fucklanorme.c ft_job.c
 FILE_OBJ = $(FILE_SRC:.c=.o)
 # **************************************************************************** #
 # 								Building Rules								   #

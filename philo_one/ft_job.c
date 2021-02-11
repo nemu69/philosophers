@@ -15,28 +15,29 @@
 int			ft_eat(t_phil *philo)
 {
 	int nb;
+	struct timeval	te;
 
-	nb = (philo->state.nb - 1 < 0 ? philo->number_philo : 0);
-	while (!philo->state.eating && ft_death(philo, 0))
+	gettimeofday(&te, NULL);
+	nb = (P->state.nb - 1 < 0 ? P->number_philo : 0);
+	while (!philo->state.eating && ft_death(P, 0))
 	{
-		if (!philo[nb - 1].state.eating && philo[nb - 1].state.forkr
-		&& philo->state.forkr)
+		if (!P[nb - 1].state.eating && P[nb - 1].state.forkr && P->state.forkr)
 		{
-			philo->state.eating = 1;
-			philo[nb - 1].state.forkr = 0;
-			if (!(ft_statenow(philo, " has taken a fork\n")))
+			P->state.eating = 1;
+			P[nb - 1].state.forkr = 0;
+			if (!(ft_statenow(P, " has taken a fork\n") &&
+			ft_statenow(P, " has taken a fork\n")))
 				return (0);
-			if (!(ft_statenow(philo, " has taken a fork\n")))
+			if (!ft_death(P, P->time_to_eat))
 				return (0);
-			if (!(ft_statenow(philo, " is eating\n")))
+			if (!(ft_statenow(P, " is eating\n")))
 				return (0);
-			last_graille(philo);
-			usleep(1000 * philo->time_to_eat);
-			ft_death(philo, philo->time_to_eat);
-			philo[nb - 1].state.forkr = 1;
+			usleep(1000 * P->time_to_eat);
+			last_graille(P);
+			P[nb - 1].state.forkr = 1;
 		}
 	}
-	return (philo->err);
+	return (P->err);
 }
 
 int			ft_think(t_phil *philo)

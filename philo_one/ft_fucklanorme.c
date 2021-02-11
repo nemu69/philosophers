@@ -78,13 +78,14 @@ int			ft_death(t_phil *philo, long long time)
 	gettimeofday(&te, NULL);
 	i = -1 - P->state.nb;
 	timenow = ((te.tv_sec * 1000LL) + (te.tv_usec / 1000));
-	if (!P->state.eating && timenow - P->state.last_eat + time > P->time_to_die)
+	if (timenow - P->state.last_eat + time > P->time_to_die)
 	{
 		if (check_death(P))
 		{
 			mlock(P, 0, 0);
 			return (0);
 		}
+		P->state.eating ? usleep(1000 * (P->time_to_die - (timenow - P->state.last_eat))) : 0;
 		ft_statenow(P, " died\n");
 		while (++i < (*P).number_philo - (P->state.nb + 1))
 			P[i].err = 0;

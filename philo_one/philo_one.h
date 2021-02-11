@@ -36,13 +36,14 @@ typedef	struct		s_phil
 	long			time_to_die;
 	long			time_to_eat;
 	long			time_to_sleep;
-	long			number_of_time_philo_must_eat;
+	long			must_eat;
+	long			ac;
 	int				err;
 	t_state			state;
 }					t_phil;
 
-void				mlock(t_phil *philo, int code, int nbmut);
-void				free_all(t_phil *philo);
+int					mlock(t_phil *philo, int code, int nbmut);
+int					free_all(t_phil *philo, char *str);
 int					check_death(t_phil *philo);
 int					ft_statenow(t_phil *philo, char *str);
 int					ft_death(t_phil *philo, long long time);
@@ -56,5 +57,6 @@ void				last_graille(t_phil *philo);
 int					ft_eat(t_phil *philo);
 int					ft_think(t_phil *philo);
 int					ft_sleep(t_phil *philo);
+int					ft_must_eat(t_phil *philo);
 
 #endif

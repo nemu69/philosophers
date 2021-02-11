@@ -53,7 +53,8 @@ int		ft_check_parse(int ac, t_phil **philo)
 	(**philo).time_to_eat < 60 ? ((**philo).err = 0) : 0;
 	(**philo).time_to_sleep < 60 ? ((**philo).err = 0) : 0;
 	if (ac == 6)
-		(**philo).number_of_time_philo_must_eat < 60 ? ((**philo).err = 0) : 0;
+		(**philo).must_eat < 1 &&
+		(**philo).must_eat != 1 ? ((**philo).err = 0) : 0;
 	return ((**philo).err);
 }
 
@@ -78,8 +79,9 @@ int		ft_parse(int ac, char **av, t_phil **philo)
 		(*philo)[i].time_to_eat = ft_atoi(av[3]);
 		(*philo)[i].time_to_sleep = ft_atoi(av[4]);
 		(*philo)[i].number_philo = count;
+		(*philo)[i].must_eat = -1;
 		if (ac == 6)
-			(*philo)[i].number_of_time_philo_must_eat = ft_atoi(av[5]);
+			(*philo)[i].must_eat = ft_atoi(av[5]);
 	}
 	return (ft_check_parse(ac, philo));
 }

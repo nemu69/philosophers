@@ -44,6 +44,7 @@ int		ft_eat(t_phil *philo)
 	while (!philo->state.eating && ft_death(P, 0))
 		if (!P[nb - 1].state.eating && P[nb - 1].state.forkr && P->state.forkr)
 		{
+
 			P->state.eating = 1;
 			P[nb - 1].state.forkr = 0;
 			if (!(ft_statenow(P, " has taken a fork\n") &&

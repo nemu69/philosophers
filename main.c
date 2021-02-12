@@ -1,51 +1,43 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   philo_one.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nepage-l <nepage-l@student.42lyon.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/06 18:57:27 by nepage-l          #+#    #+#             */
-/*   Updated: 2021/02/11 13:22:31 by nepage-l         ###   ########lyon.fr   */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "philo_two.h"
+#include <sys/types.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
+#include <errno.h>
+#include <pthread.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <semaphore.h>
+#include <unistd.h>
+#include "philo_two/philo_two.h"
 
 void		*job(void *arg)
 {
 	t_phil *philo;
 
 	P = arg;
-	while (1)
-	{
-		if (!ft_eat(P))
-		{
-			slock(P, 1, 0);
-			slock(P, 0, 0);
-			pthread_exit(NULL);
-		}
-		P->state.eating = 0;
-		if (!ft_sleep(P))
-		{
-			slock(P, 1, 0);
-			slock(P, 0, 0);
-			pthread_exit(NULL);
-		}
-		if (!ft_think(P))
-		{
-			slock(P, 1, 0);
-			slock(P, 0, 0);
-			pthread_exit(NULL);
-		}
-	}
+
+        dprintf(1 , "nb  : %d 1wreturn : %d\n", philo->state.nb ,sem_wait(philo[0].state.sem));
+        dprintf(1 , "preturn : %d" ,sem_post(philo[0].state.sem));
+        dprintf(1 , "nb  : %d 1wreturn : %d\n", philo->state.nb ,sem_wait(philo[0].state.writesem));
+
+
+        dprintf(1 , "preturn : %d" ,sem_post(philo[0].state.writesem));
+        // dprintf(1 , "preturn : %d" ,sem_post(philo[1].state.sem));
+
+
+        // sem_post(philo->state.sem);
+        // sem_post(philo[1].state.sem);
+        // sem_post(philo[2].state.sem);
+        dprintf(1,"boboobo\n");
+
 }
 
 void		ft_mutex_global(t_phil **philo)
 {
 	int i;
 
-	i = 0;
+	i = -1;
 	while (++i < (*P)->number_philo)
 	{
 		(*P)[i].state.sem = (*P)[0].state.sem;
@@ -59,16 +51,14 @@ int			ft_threads(t_phil *philo)
 	int			i;
 
 	i = -1;
-	 sem_unlink("/sem-mutex");
 	if ((P[0].state.sem = sem_open("/sem-mutex", O_CREAT, 0660, 1)) == SEM_FAILED)
 		return (free_all(philo, "sem init failed\n"));
-    sem_unlink("/sem-wmutex");
 	if ((P[0].state.writesem = sem_open("/sem-wmutex", O_CREAT, 0660, 1)) == SEM_FAILED)
 		return (free_all(philo, "sem init failed\n"));
 	while (++i < (*P).number_philo)
 		if (pthread_create(&threads[i], NULL, job, &P[i]) != 0)
 			return (free_all(philo, "thread init failded\n"));
-	ft_mutex_global(&philo);
+    ft_mutex_global(&philo);
 	i = -1;
 	while (++i < (*P).number_philo)
 		pthread_join(threads[i], NULL);

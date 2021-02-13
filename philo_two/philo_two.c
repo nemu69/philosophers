@@ -59,11 +59,13 @@ int			ft_threads(t_phil *philo)
 	int			i;
 
 	i = -1;
-	 sem_unlink("/sem-mutex");
-	if ((P[0].state.sem = sem_open("/sem-mutex", O_CREAT, 0660, 1)) == SEM_FAILED)
+	sem_unlink("/sem-mutex");
+	if ((P[0].state.sem =
+	sem_open("/sem-mutex", O_CREAT, 0660, philo->number_philo)) == SEM_FAILED)
 		return (free_all(philo, "sem init failed\n"));
-    sem_unlink("/sem-wmutex");
-	if ((P[0].state.writesem = sem_open("/sem-wmutex", O_CREAT, 0660, 1)) == SEM_FAILED)
+	sem_unlink("/sem-wmutex");
+	if ((P[0].state.writesem =
+	sem_open("/sem-wmutex", O_CREAT, 0660, 1)) == SEM_FAILED)
 		return (free_all(philo, "sem init failed\n"));
 	while (++i < (*P).number_philo)
 		if (pthread_create(&threads[i], NULL, job, &P[i]) != 0)

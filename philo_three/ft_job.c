@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_two.h"
+#include "philo_three.h"
 
 int		ft_must_eat(t_phil *philo)
 {
@@ -20,9 +20,9 @@ int		ft_must_eat(t_phil *philo)
 	if (check_death(P))
 		return (slock(P, 0, 0));
 	i = 0 - P->state.nb;
-	while (i < (*P).number_philo - (P->state.nb + 1) && !P[i].must_eat)
+	while (i < (((*P).number_philo - P->state.nb) + 1) && !P[i].must_eat)
 		i++;
-	if (i == (*P).number_philo - (P->state.nb + 1))
+	if (i == ((*P).number_philo - P->state.nb) + 1)
 	{
 		i = -1 - P->state.nb;
 		while (++i < (*P).number_philo - (P->state.nb + 1))
@@ -44,7 +44,6 @@ int		ft_eat(t_phil *philo)
 	while (!philo->state.eating && ft_death(P, 0))
 		if (!P[nb - 1].state.eating && P[nb - 1].state.forkr && P->state.forkr)
 		{
-
 			P->state.eating = 1;
 			P[nb - 1].state.forkr = 0;
 			if (!(ft_statenow(P, " has taken a fork\n") &&

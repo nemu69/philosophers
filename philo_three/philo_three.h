@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_TWO_H
-# define PHILO_TWO_H
+#ifndef PHILO_THREE_H
+# define PHILO_THREE_H
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -19,6 +19,8 @@
 # include <semaphore.h>
 # include <fcntl.h>
 # include <sys/time.h>
+# include <sys/types.h>
+# include <signal.h>
 # define P philo
 
 typedef struct		s_state
@@ -26,6 +28,7 @@ typedef struct		s_state
 	int				nb;
 	int				eating;
 	int				forkr;
+	pid_t			child;
 	sem_t			*sem;
 	sem_t			*writesem;
 	long long		start_time;

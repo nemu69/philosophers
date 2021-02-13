@@ -20,9 +20,9 @@ int		ft_must_eat(t_phil *philo)
 	if (check_death(P))
 		return (mlock(P, 0, 0));
 	i = 0 - P->state.nb;
-	while (i < (*P).number_philo - (P->state.nb + 1) && !P[i].must_eat)
+	while (i < (((*P).number_philo - P->state.nb) + 1) && !P[i].must_eat)
 		i++;
-	if (i == (*P).number_philo - (P->state.nb + 1))
+	if (i == ((*P).number_philo - P->state.nb) + 1)
 	{
 		i = -1 - P->state.nb;
 		while (++i < (*P).number_philo - (P->state.nb + 1))

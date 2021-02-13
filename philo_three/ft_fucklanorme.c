@@ -6,20 +6,20 @@
 /*   By: nepage-l <nepage-l@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:36:49 by nepage-l          #+#    #+#             */
-/*   Updated: 2021/02/10 16:14:57 by nepage-l         ###   ########lyon.fr   */
+/*   Updated: 2021/02/13 11:01:22 by nepage-l         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_two.h"
+#include "philo_three.h"
 
 int			slock(t_phil *philo, int code, int nbmut)
 {
 	if (nbmut)
-			code ? sem_wait(P->state.writesem) :
-				sem_post(P->state.writesem);
+		code ? sem_wait(P->state.writesem) :
+			sem_post(P->state.writesem);
 	if (!nbmut)
-			code ? sem_wait(P->state.sem) :
-				sem_post(P->state.sem);
+		code ? sem_wait(P->state.sem) :
+			sem_post(P->state.sem);
 	return (0);
 }
 
@@ -80,7 +80,6 @@ int			ft_death(t_phil *philo, long long time)
 	int				i;
 	long long		timenow;
 
-
 	slock(P, 1, 0);
 	gettimeofday(&te, NULL);
 	i = -1 - P->state.nb;
@@ -91,7 +90,7 @@ int			ft_death(t_phil *philo, long long time)
 			return (slock(P, 0, 0));
 		slock(P, 0, 0);
 		P->state.eating ?
-		usleep(1000 * (P->time_to_die - (timenow - P->state.last_eat))) : 0;
+			usleep(1000 * (P->time_to_die - (timenow - P->state.last_eat))) : 0;
 		ft_statenow(P, " died\n");
 		slock(P, 1, 0);
 		while (++i < (*P).number_philo - (P->state.nb + 1))

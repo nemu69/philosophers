@@ -10,35 +10,41 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_two.h"
+#include "philo_three.h"
 
-void		*job(void *arg)
+void		*job(t_phil *philo)
 {
-	t_phil *philo;
-
-	P = arg;
-	while (1)
-	{
-		if (!ft_eat(P))
-		{
-			slock(P, 1, 0);
-			slock(P, 0, 0);
-			pthread_exit(NULL);
-		}
-		P->state.eating = 0;
-		if (!ft_sleep(P))
-		{
-			slock(P, 1, 0);
-			slock(P, 0, 0);
-			pthread_exit(NULL);
-		}
-		if (!ft_think(P))
-		{
-			slock(P, 1, 0);
-			slock(P, 0, 0);
-			pthread_exit(NULL);
-		}
-	}
+	
+	philo[1].state.nb = 98;
+	usleep(1000 * 3);
+	dprintf(1, "nb : %d\n", philo->state.nb + 1);
+	// dprintf(1, "nb : %d\n", philo->err);
+	exit(0);
+	// while (1)
+	// {
+	// 	if (!ft_eat(P))
+	// 	{
+	// 		slock(P, 1, 0);
+	// 		slock(P, 0, 0);
+	// 		kill(P->state.child, SIGKILL);
+	// 		exit(0);
+	// 	}
+	// 	P->state.eating = 0;
+	// 	if (!ft_sleep(P))
+	// 	{
+	// 		slock(P, 1, 0);
+	// 		slock(P, 0, 0);
+	// 		kill(P->state.child, SIGKILL);
+	// 		exit(0);
+	// 	}
+	// 	if (!ft_think(P))
+	// 	{
+	// 		slock(P, 1, 0);
+	// 		slock(P, 0, 0);
+	// 		kill(P->state.child, SIGKILL);
+	// 		exit(0);
+	// 	}
+	// }
 }
 
 void		ft_mutex_global(t_phil **philo)
@@ -55,23 +61,27 @@ void		ft_mutex_global(t_phil **philo)
 
 int			ft_threads(t_phil *philo)
 {
-	pthread_t	threads[(*P).number_philo];
 	int			i;
 
 	i = -1;
-	 sem_unlink("/sem-mutex");
-	if ((P[0].state.sem = sem_open("/sem-mutex", O_CREAT, 0660, 1)) == SEM_FAILED)
+	sem_unlink("/sem-mutex");
+	if ((P[0].state.sem =
+	sem_open("/sem-mutex", O_CREAT, 0660, philo->number_philo)) == SEM_FAILED)
 		return (free_all(philo, "sem init failed\n"));
-    sem_unlink("/sem-wmutex");
-	if ((P[0].state.writesem = sem_open("/sem-wmutex", O_CREAT, 0660, 1)) == SEM_FAILED)
+	sem_unlink("/sem-wmutex");
+	if ((P[0].state.writesem =
+	sem_open("/sem-wmutex", O_CREAT, 0660, 1)) == SEM_FAILED)
 		return (free_all(philo, "sem init failed\n"));
-	while (++i < (*P).number_philo)
-		if (pthread_create(&threads[i], NULL, job, &P[i]) != 0)
-			return (free_all(philo, "thread init failded\n"));
 	ft_mutex_global(&philo);
 	i = -1;
 	while (++i < (*P).number_philo)
-		pthread_join(threads[i], NULL);
+	{
+		P[i].state.child = fork();
+		if (P[i].state.child == -1)
+			return (free_all(philo, "fork init failed\n"));
+		else if (P[i].state.child == 0)
+			job(&(philo[i]));
+	}
 	i = -1;
 	while (!P[++i].must_eat && i < (*P).number_philo - (P->state.nb + 1))
 		;

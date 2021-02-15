@@ -30,6 +30,7 @@ int			free_all(t_phil *philo, char *str)
 	i = -1;
 	while (++i < (*P).number_philo)
 		sem_unlink("/sem-mutex");
+	i = -1;
 	while (++i < (*P).number_philo)
 		sem_unlink("/sem-wmutex");
 	free(P);

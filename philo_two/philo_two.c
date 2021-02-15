@@ -23,20 +23,20 @@ void		*job(void *arg)
 		{
 			slock(P, 1, 0);
 			slock(P, 0, 0);
-			pthread_exit(NULL);
+			return (NULL);
 		}
 		P->state.eating = 0;
 		if (!ft_sleep(P))
 		{
 			slock(P, 1, 0);
 			slock(P, 0, 0);
-			pthread_exit(NULL);
+			return (NULL);
 		}
 		if (!ft_think(P))
 		{
 			slock(P, 1, 0);
 			slock(P, 0, 0);
-			pthread_exit(NULL);
+			return (NULL);
 		}
 	}
 }

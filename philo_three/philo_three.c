@@ -14,37 +14,32 @@
 
 void		*job(t_phil *philo)
 {
-	
-	philo[1].state.nb = 98;
-	usleep(1000 * 3);
-	dprintf(1, "nb : %d\n", philo->state.nb + 1);
-	// dprintf(1, "nb : %d\n", philo->err);
-	exit(0);
-	// while (1)
-	// {
-	// 	if (!ft_eat(P))
-	// 	{
-	// 		slock(P, 1, 0);
-	// 		slock(P, 0, 0);
-	// 		kill(P->state.child, SIGKILL);
-	// 		exit(0);
-	// 	}
-	// 	P->state.eating = 0;
-	// 	if (!ft_sleep(P))
-	// 	{
-	// 		slock(P, 1, 0);
-	// 		slock(P, 0, 0);
-	// 		kill(P->state.child, SIGKILL);
-	// 		exit(0);
-	// 	}
-	// 	if (!ft_think(P))
-	// 	{
-	// 		slock(P, 1, 0);
-	// 		slock(P, 0, 0);
-	// 		kill(P->state.child, SIGKILL);
-	// 		exit(0);
-	// 	}
-	// }
+	while (1)
+	{
+		P->state.eating = 1;
+		// return(NULL);
+		// if (!ft_eat(P))
+		// {
+		// 	slock(P, 1, 0);
+		// 	slock(P, 0, 0);			
+		// 	return (NULL);
+		// }
+		// P->state.eating = 0;
+		// if (!ft_sleep(P))
+		// {
+		// 	slock(P, 1, 0);
+		// 	slock(P, 0, 0);
+
+		// 	return (NULL);
+		// }
+		// if (!ft_think(P))
+		// {
+		// 	slock(P, 1, 0);
+		// 	slock(P, 0, 0);
+
+		// 	return (NULL);
+		// }
+	}
 }
 
 void		ft_mutex_global(t_phil **philo)
@@ -59,7 +54,49 @@ void		ft_mutex_global(t_phil **philo)
 	}
 }
 
-int			ft_threads(t_phil *philo)
+void		*check_child(void *arg)
+{
+	t_phil	*philo;
+	int		nb;
+
+	philo = arg;
+	nb = (P->state.nb - 1 < 0 ? P->number_philo : 0);
+	while (1)
+	{
+		dprintf(1, "nb %d", P->state.eating);
+		// if (philo->state.eating)
+		// {
+		// 	P[nb - 1].state.forkr = 0;
+		// 	if (!ft_death(P, P->time_to_eat))
+		// 		return (NULL);
+		// }
+		// if (!ft_death(P, 0))
+		// 	return (NULL);
+		// slock(P, 0, 0);
+	}
+}
+
+int			ft_thread(t_phil *philo)
+{
+	pthread_t	threads[(*P).number_philo];
+	int			i;
+
+	i = -1;
+	while (++i < (*P).number_philo)
+		if (pthread_create(&threads[i], NULL, check_child, &P[i]) != 0)
+			return (free_all(philo, "thread init failded\n"));
+	i = -1;
+	while (++i < (*P).number_philo)
+		pthread_join(threads[i], NULL);
+		i = -1;
+	while (!P[++i].must_eat && i < (*P).number_philo - (P->state.nb + 1))
+		;
+	if (i == (*P).number_philo - (P->state.nb + 1))
+		return (free_all(P, "Philo is bien graille\n"));
+	return (free_all(P, NULL));
+}
+
+int			ft_process(t_phil *philo)
 {
 	int			i;
 
@@ -80,14 +117,9 @@ int			ft_threads(t_phil *philo)
 		if (P[i].state.child == -1)
 			return (free_all(philo, "fork init failed\n"));
 		else if (P[i].state.child == 0)
-			job(&(philo[i]));
+			job(&philo[i]);
 	}
-	i = -1;
-	while (!P[++i].must_eat && i < (*P).number_philo - (P->state.nb + 1))
-		;
-	if (i == (*P).number_philo - (P->state.nb + 1))
-		return (free_all(P, "Philo is bien graille\n"));
-	return (free_all(P, NULL));
+	return (ft_thread(philo));
 }
 
 int			main(int ac, char **av)
@@ -100,5 +132,5 @@ int			main(int ac, char **av)
 		return (0);
 	if (!(ft_parse(ac, av, &P)))
 		return (write(1, "Error arguments value\n", 22));
-	return (ft_threads(philo));
+	return (ft_process(philo));
 }

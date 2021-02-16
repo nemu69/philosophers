@@ -21,6 +21,8 @@
 # include <sys/time.h>
 # include <sys/types.h>
 # include <signal.h>
+# include <errno.h>
+# include <string.h>
 # define P philo
 
 typedef struct		s_state

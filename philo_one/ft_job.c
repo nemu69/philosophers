@@ -42,6 +42,7 @@ int		ft_eat(t_phil *philo)
 	gettimeofday(&te, NULL);
 	nb = (P->state.nb - 1 < 0 ? P->number_philo : 0);
 	while (!philo->state.eating && ft_death(P, 0))
+	{
 		if (!P[nb - 1].state.eating && P[nb - 1].state.forkr && P->state.forkr)
 		{
 			P->state.eating = 1;
@@ -57,8 +58,10 @@ int		ft_eat(t_phil *philo)
 			usleep(1000 * P->time_to_eat);
 			last_graille(P);
 			P[nb - 1].state.forkr = 1;
+			usleep(1000);
 			return (ft_must_eat(philo));
 		}
+	}
 	return (P->err);
 }
 

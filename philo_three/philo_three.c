@@ -12,33 +12,30 @@
 
 #include "philo_three.h"
 
-void		*job(t_phil *philo)
+void		*job(t_phil	*philo)
 {
 	while (1)
 	{
-		P->state.eating = 1;
-		// return(NULL);
-		// if (!ft_eat(P))
-		// {
-		// 	slock(P, 1, 0);
-		// 	slock(P, 0, 0);			
-		// 	return (NULL);
-		// }
-		// P->state.eating = 0;
-		// if (!ft_sleep(P))
-		// {
-		// 	slock(P, 1, 0);
-		// 	slock(P, 0, 0);
+		if (!ft_eat(P))
+		{
+			slock(P, 1, 0);
+			slock(P, 0, 0);			
+			return (NULL);
+		}
+		P->state.eating = 0;
+		if (!ft_sleep(P))
+		{
+			slock(P, 1, 0);
+			slock(P, 0, 0);
 
-		// 	return (NULL);
-		// }
-		// if (!ft_think(P))
-		// {
-		// 	slock(P, 1, 0);
-		// 	slock(P, 0, 0);
+			return (NULL);
+		}
+		if (!ft_think(P))
+		{
+			slock(P, 1, 0);
+			slock(P, 0, 0);
 
-		// 	return (NULL);
-		// }
+		}
 	}
 }
 
@@ -63,16 +60,16 @@ void		*check_child(void *arg)
 	nb = (P->state.nb - 1 < 0 ? P->number_philo : 0);
 	while (1)
 	{
-		dprintf(1, "nb %d", P->state.eating);
-		// if (philo->state.eating)
-		// {
-		// 	P[nb - 1].state.forkr = 0;
-		// 	if (!ft_death(P, P->time_to_eat))
-		// 		return (NULL);
-		// }
+		// dprintf(1, "\nhilo : %d, err : %d\n", philo->state.nb, philo->err);
+		if (philo->state.eating)
+		{
+			P[nb - 1].state.forkr = 0;
+			if (!ft_death(P, P->time_to_eat))
+				return (NULL);
+		}
 		// if (!ft_death(P, 0))
-		// 	return (NULL);
 		// slock(P, 0, 0);
+		// 	return (NULL);
 	}
 }
 
@@ -99,6 +96,7 @@ int			ft_thread(t_phil *philo)
 int			ft_process(t_phil *philo)
 {
 	int			i;
+	// pid_t		info;
 
 	i = -1;
 	sem_unlink("/sem-mutex");
@@ -114,10 +112,16 @@ int			ft_process(t_phil *philo)
 	while (++i < (*P).number_philo)
 	{
 		P[i].state.child = fork();
+	}
+	i = -1;
+	while (++i < (*P).number_philo)
+	{
 		if (P[i].state.child == -1)
 			return (free_all(philo, "fork init failed\n"));
 		else if (P[i].state.child == 0)
 			job(&philo[i]);
+		// else
+		// 	waitpid(P[i].state.child, NULL, 0);
 	}
 	return (ft_thread(philo));
 }

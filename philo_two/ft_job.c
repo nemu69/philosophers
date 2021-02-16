@@ -57,6 +57,7 @@ int		ft_eat(t_phil *philo)
 			usleep(1000 * P->time_to_eat);
 			last_graille(P);
 			P[nb - 1].state.forkr = 1;
+			usleep(1000);
 			return (ft_must_eat(philo));
 		}
 	return (P->err);

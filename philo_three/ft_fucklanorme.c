@@ -84,7 +84,7 @@ int			ft_death(t_phil *philo, long long time)
 	int				i;
 	long long		timenow;
 
-	// slock(P, 1, 0);
+	slock(P, 1, 0);
 	gettimeofday(&te, NULL);
 	i = -1 - P->state.nb;
 	timenow = ((te.tv_sec * 1000LL) + (te.tv_usec / 1000));

@@ -36,23 +36,22 @@ int		ft_must_eat(t_phil *philo)
 
 int		ft_eat(t_phil *philo)
 {
-	struct timeval	te;
-
-	gettimeofday(&te, NULL);
 	slock(philo, 1, 0);
 	if (!(ft_statenow(P, " has taken a fork\n")))
 		return (0);
+	slock(philo, 1, 0);
 	if (!(ft_statenow(P, " has taken a fork\n")))
 		return (0);
+	P->state.eating = 1;
 	if (!(ft_statenow(P, " is eating\n")))
 		return (0);
-	slock(philo, 0, 0);
 	P->must_eat--;
 	usleep(1000 * P->time_to_eat);
-	// slock(philo, 0, 0);
-	// slock(philo, 1, 0);
+	slock(philo, 0, 0);
+	slock(philo, 0, 0);
 	last_graille(P);
-	// usleep(1000); optionel
+	P->state.eating = 0;
+	// usleep(1000);
 	return (ft_sleep(philo));
 
 }

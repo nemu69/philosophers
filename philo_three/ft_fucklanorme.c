@@ -61,11 +61,7 @@ int			ft_statenow(t_phil *philo, char *str)
 	slock(P, 1, 1);
 	if (check_death(P))
 	{
-		slock(P, 0, 1);
-		return (0);
-	}
-	if (!ft_must_eat(P))
-	{
+		slock(P, 0, 0);
 		slock(P, 0, 1);
 		return (0);
 	}
@@ -81,15 +77,14 @@ int			ft_statenow(t_phil *philo, char *str)
 int			ft_death(t_phil *philo, long long time)
 {
 	struct timeval	te;
-	int				i;
 	long long		timenow;
 
 	slock(P, 1, 0);
 	gettimeofday(&te, NULL);
-	i = -1 - P->state.nb;
 	timenow = ((te.tv_sec * 1000LL) + (te.tv_usec / 1000));
 	if (timenow - P->state.last_eat + time > P->time_to_die)
 	{
+		dprintf(1,"ferhyudfhimr\n");
 		if (check_death(P))
 			return (slock(P, 0, 0));
 		slock(P, 0, 0);
@@ -97,8 +92,7 @@ int			ft_death(t_phil *philo, long long time)
 			usleep(1000 * (P->time_to_die - (timenow - P->state.last_eat))) : 0;
 		ft_statenow(P, " died\n");
 		slock(P, 1, 0);
-		while (++i < (*P).number_philo - (P->state.nb + 1))
-			P[i].err = 0;
+		P->err = 0;
 		slock(P, 0, 0);
 		return (0);
 	}

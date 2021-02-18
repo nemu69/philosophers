@@ -49,6 +49,12 @@ typedef	struct		s_phil
 	t_state			state;
 }					t_phil;
 
+typedef	struct		s_parent
+{
+	t_phil			*philo;
+	pid_t			dad;
+}					t_parent;
+
 int					slock(t_phil *philo, int code, int nbmut);
 int					free_all(t_phil *philo, char *str);
 int					check_death(t_phil *philo);

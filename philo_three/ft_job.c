@@ -37,6 +37,7 @@ int		ft_must_eat(t_phil *philo)
 int		ft_eat(t_phil *philo)
 {
 	slock(philo, 1, 0);
+	P->must_eat--;
 	if (!(ft_statenow(P, " has taken a fork\n")))
 		return (0);
 	slock(philo, 1, 0);
@@ -45,7 +46,6 @@ int		ft_eat(t_phil *philo)
 	P->state.eating = 1;
 	if (!(ft_statenow(P, " is eating\n")))
 		return (0);
-	P->must_eat--;
 	usleep(1000 * P->time_to_eat);
 	slock(philo, 0, 0);
 	slock(philo, 0, 0);
@@ -58,19 +58,15 @@ int		ft_eat(t_phil *philo)
 
 int		ft_think(t_phil *philo)
 {
-	slock(philo, 1, 0);
 	if (!(ft_statenow(P, " is thinking\n")))
 		return (0);
-	slock(philo, 0, 0);
 	return (1);
 }
 
 int		ft_sleep(t_phil *philo)
 {
-	slock(philo, 1, 0);
 	if (!(ft_statenow(P, " is sleeping\n")))
 		return (0);
 	usleep(1000 * P->time_to_sleep);
-	slock(philo, 0, 0); 
 	return (ft_think(philo));
 }

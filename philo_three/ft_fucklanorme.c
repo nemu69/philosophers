@@ -34,12 +34,14 @@ int			free_all(t_phil *philo, char *str)
 	while (++i < (*P).number_philo)
 		sem_unlink("/sem-wmutex");
 	(void)str;
-	// if (str)
-	// 	write(1, str, 23);
-	// i = -1;
-	// while (++i < (*P).number_philo)
-	// 	kill(P[i].state.child, SIGKILL);
-	// free(P);
+	if (str)
+		write(1, str, 23);
+	free(P);
+	kill(P->state.child, SIGKILL);
+		while (1)
+	{
+		/* code */
+	}
 	return (0);
 }
 

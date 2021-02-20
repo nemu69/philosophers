@@ -20,21 +20,19 @@ void		*check_child(void *arg)
 	while (1)
 	{
 		if (!ft_death(P, 0))
-			return (NULL);
+			exit(1);
+		if (philo->must_eat == -1)
+		{
+			slock(P, 1, 1);
+			exit(0);
+		}
 	}
-}
-
-int			ft_fini(t_parent *papa)
-{
-
-	return (free_all(papa->philo, NULL));
 }
 
 void		*job(t_phil	*philo)
 {
 	pthread_t	threads[1];
 
-	usleep(1000);
 	last_graille(P);
 	P->state.start_time = P->state.last_eat;
 	if (pthread_create(&threads[0], NULL, check_child, philo) != 0)
@@ -50,7 +48,7 @@ void		*job(t_phil	*philo)
 		}
 		philo->state.eating = 0;
 	}
-		return(NULL);
+	return(NULL);
 }
 
 void		ft_mutex_global(t_phil **philo)
@@ -94,18 +92,18 @@ int			ft_process(t_parent *papa)
 		else
 			papa->dad = info;
 	}
-	if (info != 0)
-	{
-		int j = -1;
-		int status;
-		while (++j < papa->philo->number_philo){
 
-    		waitpid(papa->dad, &status, 0);
-			free_all(papa->P, NULL);
-    		printf("exit status %d = %d\n", i, WEXITSTATUS(status));
-		}
-	}
-	return (ft_fini(papa));
+	int		status;
+	pid_t	tmp_pid;
+
+	status = 0;
+	tmp_pid = -1;
+	while (!status && tmp_pid <= 0)
+		tmp_pid = waitpid(-1, &status, 0);
+	kill(papa->dad, SIGKILL);
+	if (WEXITSTATUS(status))
+		return (free_all(papa->P, NULL));
+	return (free_all(papa->P, "Philo is bien graille\n"));
 }
 
 int			main(int ac, char **av)
@@ -114,7 +112,7 @@ int			main(int ac, char **av)
 
 	if (!((ac == 5 || ac == 6) && ft_atoi(av[1]) > 0))
 		return (write(1, "Error numbers arguments\n", 24));
-	if (!(papa = (t_parent *)ft_calloc(1, sizeof(t_phil))))
+	if (!(papa = (t_parent *)ft_calloc(1, sizeof(t_parent))))
 		return (0);
 	if (!(papa->philo = (t_phil *)ft_calloc(ft_atoi(av[1]) + 1, sizeof(t_phil))))
 		return (0);

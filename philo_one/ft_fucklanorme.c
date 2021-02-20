@@ -89,15 +89,15 @@ int			ft_death(t_phil *philo, long long time)
 	timenow = ((te.tv_sec * 1000LL) + (te.tv_usec / 1000));
 	if (timenow - P->state.last_eat + time > P->time_to_die)
 	{
-		if (check_death(P))
-			return (mlock(P, 0, 0));
 		mlock(P, 0, 0);
 		P->state.eating ?
 		usleep(1000 * (P->time_to_die - (timenow - P->state.last_eat))) : 0;
+		if (check_death(P))
+			return (mlock(P, 0, 0));
 		ft_statenow(P, " died\n");
-		mlock(P, 1, 0);
 		while (++i < (*P).number_philo - (P->state.nb + 1))
 			P[i].err = 0;
+		mlock(P, 1, 0);
 		mlock(P, 0, 0);
 		return (0);
 	}

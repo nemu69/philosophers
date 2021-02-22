@@ -12,17 +12,6 @@
 
 #include "philo_three.h"
 
-int			slock(t_phil *philo, int code, int nbmut)
-{
-	if (nbmut)
-		code ? sem_wait(P->state.writesem) :
-			sem_post(P->state.writesem);
-	if (!nbmut)
-		code ? sem_wait(P->state.sem) :
-			sem_post(P->state.sem);
-	return (0);
-}
-
 int			free_all(t_phil *philo, char *str)
 {
 	int i;
@@ -37,11 +26,6 @@ int			free_all(t_phil *philo, char *str)
 	if (str)
 		write(1, str, 23);
 	free(P);
-	kill(P->state.child, SIGKILL);
-		while (1)
-	{
-		/* code */
-	}
 	return (0);
 }
 
@@ -59,7 +43,7 @@ int			check_death(t_phil *philo)
 	return (0);
 }
 
-int		ft_strcmp(char *s1, char *s2)
+int			ft_strcmp(char *s1, char *s2)
 {
 	int i;
 
@@ -77,7 +61,7 @@ int			ft_statenow(t_phil *philo, char *str)
 	ft_putnbr(P->state.nb + 1);
 	write(1, " ", 1);
 	ft_putstr(str);
-	!ft_strcmp(" died\n" , str) ? 0 : slock(P, 0, 1);
+	!ft_strcmp(" died\n", str) ? 0 : slock(P, 0, 1);
 	return (1);
 }
 

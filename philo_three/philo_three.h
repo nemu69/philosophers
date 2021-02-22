@@ -71,5 +71,6 @@ int					ft_eat(t_phil *philo);
 int					ft_think(t_phil *philo);
 int					ft_sleep(t_phil *philo);
 int					ft_must_eat(t_phil *philo);
+int					ft_status(t_parent *papa);
 
 #endif

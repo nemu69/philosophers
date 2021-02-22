@@ -12,32 +12,44 @@
 
 #include "philo_two.h"
 
+int			check_child(t_phil *philo)
+{
+	int i;
+
+	i = -1 - P->state.nb;
+	if (check_death(P))
+		return (0);
+	while (++i < (*P).number_philo - (P->state.nb + 1))
+	{
+		if (!ft_death(&P[i], 0))
+		{
+			P[i].must_eat = -5;
+			return (0);
+		}
+		if (P[i].must_eat == -1)
+		{
+			P->err = 0;
+			return (0);
+		}
+	}
+	return (1);
+}
+
 void		*job(void *arg)
 {
 	t_phil *philo;
 
 	P = arg;
+	usleep(100 * P->state.nb);
 	while (1)
 	{
 		if (!ft_eat(P))
 		{
-			slock(P, 1, 0);
+			slock(P, 0, 1);
 			slock(P, 0, 0);
 			return (NULL);
 		}
-		P->state.eating = 0;
-		if (!ft_sleep(P))
-		{
-			slock(P, 1, 0);
-			slock(P, 0, 0);
-			return (NULL);
-		}
-		if (!ft_think(P))
-		{
-			slock(P, 1, 0);
-			slock(P, 0, 0);
-			return (NULL);
-		}
+		philo->state.eating = 0;
 	}
 }
 
@@ -75,10 +87,9 @@ int			ft_threads(t_phil *philo)
 	while (++i < (*P).number_philo)
 		pthread_join(threads[i], NULL);
 	i = -1;
-	while (!P[++i].must_eat && i < (*P).number_philo - (P->state.nb + 1))
-		;
-	if (i == (*P).number_philo - (P->state.nb + 1))
-		return (free_all(P, "Philo is bien graille\n"));
+	while (++i < (*P).number_philo - (P->state.nb + 1))
+		if (P[i].must_eat == -1)
+			return (free_all(P, "Philo is bien graille\n"));
 	return (free_all(P, NULL));
 }
 

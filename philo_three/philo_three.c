@@ -38,12 +38,7 @@ void	*job(t_phil *philo)
 	while (1)
 	{
 		if (!ft_eat(philo))
-		{
-			slock(philo, 1, 0);
-			slock(philo, 0, 0);
 			return (NULL);
-		}
-		philo->state.eating = 0;
 	}
 	return (NULL);
 }

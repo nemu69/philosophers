@@ -59,6 +59,6 @@ void				last_graille(t_phil *philo);
 int					ft_eat(t_phil *philo);
 int					ft_think(t_phil *philo);
 int					ft_sleep(t_phil *philo);
-int					ft_must_eat(t_phil *philo);
+int					check_child(t_phil *philo);
 
 #endif

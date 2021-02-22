@@ -79,7 +79,7 @@ int		ft_parse(int ac, char **av, t_phil **philo)
 		(*philo)[i].time_to_eat = ft_atoi(av[3]);
 		(*philo)[i].time_to_sleep = ft_atoi(av[4]);
 		(*philo)[i].number_philo = count;
-		(*philo)[i].must_eat = -1;
+		(*philo)[i].must_eat = -2;
 		if (ac == 6)
 			(*philo)[i].must_eat = ft_atoi(av[5]);
 	}

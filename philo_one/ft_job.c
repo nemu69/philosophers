@@ -49,9 +49,9 @@ int		ft_eat(t_phil *philo)
 			if (!(ft_statenow(P, " has taken a fork\n") &&
 			ft_statenow(P, " has taken a fork\n")))
 				return (0);
-			if (!ft_death(P, P->time_to_eat))
-				return (0);
 			if (!(ft_statenow(P, " is eating\n")))
+				return (0);
+			if (!ft_death(P, P->time_to_eat))
 				return (0);
 			P->must_eat--;
 			usleep(1000 * P->time_to_eat);

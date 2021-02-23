@@ -19,10 +19,10 @@ void	*check_child(void *arg)
 	philo = arg;
 	while (1)
 	{
-		if (!ft_death(P, 0))
-			exit(1);
 		if (philo->must_eat == -1)
 			exit(0);
+		if (!ft_death(P, 0))
+			exit(1);
 	}
 }
 
@@ -33,8 +33,6 @@ void	*job(t_phil *philo)
 	if (pthread_create(&threads[0], NULL, check_child, philo) != 0)
 		return (NULL);
 	pthread_detach(threads[0]);
-	last_graille(P);
-	P->state.start_time = P->state.last_eat;
 	while (1)
 	{
 		if (!ft_eat(philo))
@@ -55,10 +53,13 @@ int		ft_mutex_global(t_phil **philo)
 	if (((*philo)[0].state.writesem =
 				sem_open("/sem-wmutex", O_CREAT, 0660, 1)) == SEM_FAILED)
 		return (0);
+	last_graille(&(*P)[0]);
 	while (++i < (*philo)->number_philo)
 	{
 		(*philo)[i].state.sem = (*philo)[0].state.sem;
 		(*philo)[i].state.writesem = (*philo)[0].state.writesem;
+		(*philo)[i].state.start_time = (*philo)[0].state.last_eat;
+		(*philo)[i].state.last_eat = (*philo)[0].state.last_eat;
 	}
 	return (1);
 }

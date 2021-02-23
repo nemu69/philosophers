@@ -21,6 +21,7 @@ int		ft_eat(t_phil *philo)
 	if (!(ft_statenow(P, " has taken a fork\n")))
 		return (0);
 	P->must_eat--;
+	P->must_eat == -1 ? slock(P, 1, 1) : 0;	
 	if (!(ft_statenow(P, " is eating\n")))
 		return (0);
 	usleep(1000 * P->time_to_eat);
@@ -29,6 +30,7 @@ int		ft_eat(t_phil *philo)
 	last_graille(P);
 	return (ft_sleep(philo));
 }
+
 
 int		ft_think(t_phil *philo)
 {

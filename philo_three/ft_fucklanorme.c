@@ -22,7 +22,6 @@ int			free_all(t_phil *philo, char *str)
 	i = -1;
 	while (++i < (*P).number_philo)
 		sem_unlink("/sem-wmutex");
-	(void)str;
 	if (str)
 		write(1, str, 23);
 	free(P);
@@ -34,7 +33,7 @@ int			check_death(t_phil *philo)
 	int i;
 
 	i = -1 - P->state.nb;
-	while (++i < (*P).number_philo - (P->state.nb + 1))
+	while (++i < (*P).number_philo - P->state.nb)
 		if (!P[i].err)
 		{
 			P->err = 0;

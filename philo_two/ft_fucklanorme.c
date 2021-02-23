@@ -6,22 +6,11 @@
 /*   By: nepage-l <nepage-l@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:36:49 by nepage-l          #+#    #+#             */
-/*   Updated: 2021/02/13 11:01:22 by nepage-l         ###   ########lyon.fr   */
+/*   Updated: 2021/02/23 10:48:33 by nepage-l         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_two.h"
-
-int			slock(t_phil *philo, int code, int nbmut)
-{
-	if (nbmut)
-		code ? sem_wait(P->state.writesem) :
-			sem_post(P->state.writesem);
-	if (!nbmut)
-		code ? sem_wait(P->state.sem) :
-			sem_post(P->state.sem);
-	return (0);
-}
 
 int			free_all(t_phil *philo, char *str)
 {
@@ -44,12 +33,14 @@ int			check_death(t_phil *philo)
 	int i;
 
 	i = -1 - P->state.nb;
-	while (++i < (*P).number_philo - (P->state.nb + 1))
+	while (++i < (*P).number_philo - P->state.nb)
+	{
 		if (!P[i].err || P[i].must_eat == -1)
 		{
 			P->err = 0;
 			return (1);
 		}
+	}
 	return (0);
 }
 
@@ -66,15 +57,16 @@ int			ft_strcmp(char *s1, char *s2)
 int			ft_statenow(t_phil *philo, char *str)
 {
 	slock(P, 1, 1);
-		// dprintf(1, "%s\n" ,str);
 	if (ft_strcmp(" died\n", str))
 	{
 		if (!check_child(philo))
+		{
+			slock(P, 0, 1);
 			return (0);
+		}
 	}
-	else
-		if (check_death(P))
-			return (0);
+	else if (check_death(P))
+		return (0);
 	ft_putnbr(current_timestamp(P));
 	write(1, " ", 1);
 	ft_putnbr(P->state.nb + 1);

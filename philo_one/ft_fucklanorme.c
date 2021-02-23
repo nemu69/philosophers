@@ -18,11 +18,11 @@ int			mlock(t_phil *philo, int code, int nbmut)
 
 	i = -1 - P->state.nb;
 	if (nbmut)
-		while (++i < (*P).number_philo - (P->state.nb + 1))
+		while (++i < (*P).number_philo - P->state.nb)
 			code ? pthread_mutex_lock(&P[i].state.writemutex) :
 				pthread_mutex_unlock(&P[i].state.writemutex);
 	if (!nbmut)
-		while (++i < (*P).number_philo - (P->state.nb + 1))
+		while (++i < (*P).number_philo - P->state.nb)
 			code ? pthread_mutex_lock(&P[i].state.mutex) :
 				pthread_mutex_unlock(&P[i].state.mutex);
 	return (0);
@@ -46,7 +46,7 @@ int			check_death(t_phil *philo)
 	int i;
 
 	i = -1 - P->state.nb;
-	while (++i < (*P).number_philo - (P->state.nb + 1))
+	while (++i < (*P).number_philo - P->state.nb)
 		if (!P[i].err)
 		{
 			P->err = 0;
@@ -95,7 +95,7 @@ int			ft_death(t_phil *philo, long long time)
 		if (check_death(P))
 			return (mlock(P, 0, 0));
 		ft_statenow(P, " died\n");
-		while (++i < (*P).number_philo - (P->state.nb + 1))
+		while (++i < (*P).number_philo - P->state.nb)
 			P[i].err = 0;
 		mlock(P, 1, 0);
 		mlock(P, 0, 0);

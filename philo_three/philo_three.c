@@ -30,11 +30,11 @@ void	*job(t_phil *philo)
 {
 	pthread_t	threads[1];
 
-	last_graille(P);
-	P->state.start_time = P->state.last_eat;
 	if (pthread_create(&threads[0], NULL, check_child, philo) != 0)
 		return (NULL);
 	pthread_detach(threads[0]);
+	last_graille(P);
+	P->state.start_time = P->state.last_eat;
 	while (1)
 	{
 		if (!ft_eat(philo))

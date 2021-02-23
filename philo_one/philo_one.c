@@ -58,9 +58,9 @@ int			ft_threads(t_phil *philo)
 	while (++i < (*P).number_philo)
 		pthread_join(threads[i], NULL);
 	i = -1;
-	while (!P[++i].must_eat && i < (*P).number_philo - (P->state.nb + 1))
+	while (!P[++i].must_eat && i < (*P).number_philo - (P->state.nb))
 		;
-	if (i == (*P).number_philo - (P->state.nb + 1))
+	if (i == (*P).number_philo - (P->state.nb))
 		return (free_all(P, "Philo is bien graille\n"));
 	return (free_all(P, NULL));
 }

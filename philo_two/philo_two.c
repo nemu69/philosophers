@@ -19,18 +19,19 @@ int			check_child(t_phil *philo)
 	i = -1 - P->state.nb;
 	if (check_death(P))
 		return (0);
-	while (++i < (*P).number_philo - (P->state.nb + 1))
-	{
+	while (++i < (*P).number_philo - P->state.nb)
 		if (!ft_death(&P[i], 0))
 		{
 			P[i].must_eat = -5;
 			return (0);
 		}
-		if (P[i].must_eat == -1)
-		{
-			P->err = 0;
-			return (0);
-		}
+	i = -1 - P->state.nb;
+	while (i < (((*P).number_philo - P->state.nb)) && !P[i].must_eat)
+		i++;
+	if (i == ((*P).number_philo - P->state.nb))
+	{
+		P->err = 0;
+		return (0);
 	}
 	return (1);
 }
@@ -87,9 +88,10 @@ int			ft_threads(t_phil *philo)
 	while (++i < (*P).number_philo)
 		pthread_join(threads[i], NULL);
 	i = -1;
-	while (++i < (*P).number_philo - (P->state.nb + 1))
-		if (P[i].must_eat == -1)
-			return (free_all(P, "Philo is bien graille\n"));
+	while (!P[++i].must_eat && i < (*P).number_philo - (P->state.nb))
+		;
+	if (i == (*P).number_philo - (P->state.nb))
+		return (free_all(P, "Philo is bien graille\n"));
 	return (free_all(P, NULL));
 }
 

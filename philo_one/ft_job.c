@@ -6,7 +6,7 @@
 /*   By: nepage-l <nepage-l@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:36:49 by nepage-l          #+#    #+#             */
-/*   Updated: 2021/04/05 13:47:29 by nepage-l         ###   ########lyon.fr   */
+/*   Updated: 2021/04/05 15:45:21 by nepage-l         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ int		ft_eat(t_phil *philo)
 			while (!P->state.forkr)
 				if (!ft_death(P, 0))
 					return (0);
-			if (!ft_statenow(P, " has taken a fork\n") ||
-			!(ft_statenow(P, " is eating\n") ||
-			!ft_death(P, P->time_to_eat)))
+			if ((!ft_statenow(P, " has taken a fork\n") ||
+			!(ft_statenow(P, " is eating\n"))) ||
+			(!ft_death(P, P->time_to_eat)))
 				return (0);
 			P->must_eat > 0 ? P->must_eat-- : 0;
 			usleep(1000 * P->time_to_eat);

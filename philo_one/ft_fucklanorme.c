@@ -6,7 +6,7 @@
 /*   By: nepage-l <nepage-l@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:36:49 by nepage-l          #+#    #+#             */
-/*   Updated: 2021/02/10 16:14:57 by nepage-l         ###   ########lyon.fr   */
+/*   Updated: 2021/04/05 12:56:00 by nepage-l         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int			ft_death(t_phil *philo, long long time)
 	gettimeofday(&te, NULL);
 	i = -1 - P->state.nb;
 	timenow = ((te.tv_sec * 1000LL) + (te.tv_usec / 1000));
-	if (timenow - P->state.last_eat + time > P->time_to_die)
+	if (timenow - P->state.last_eat + time > P->time_to_die + 15)
 	{
 		mlock(P, 0, 0);
 		P->state.eating ?
@@ -95,10 +95,10 @@ int			ft_death(t_phil *philo, long long time)
 		if (check_death(P))
 			return (mlock(P, 0, 0));
 		ft_statenow(P, " died\n");
-		while (++i < (*P).number_philo - P->state.nb)
-			P[i].err = 0;
 		mlock(P, 1, 0);
 		mlock(P, 0, 0);
+		while (++i < (*P).number_philo - P->state.nb)
+			P[i].err = 0;
 		return (0);
 	}
 	mlock(P, 0, 0);

@@ -6,7 +6,7 @@
 /*   By: nepage-l <nepage-l@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:36:49 by nepage-l          #+#    #+#             */
-/*   Updated: 2021/04/05 15:46:16 by nepage-l         ###   ########lyon.fr   */
+/*   Updated: 2021/04/10 15:25:58 by nepage-l         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,33 +41,9 @@ int			free_all(t_phil *philo, char *str)
 	return (0);
 }
 
-int			check_death(t_phil *philo)
-{
-	int i;
-
-	i = -1 - P->state.nb;
-	while (++i < (*P).number_philo - P->state.nb)
-		if (!P[i].err)
-		{
-			P->err = 0;
-			return (1);
-		}
-	return (0);
-}
-
 int			ft_statenow(t_phil *philo, char *str)
 {
 	mlock(P, 1, 1);
-	if (check_death(P))
-	{
-		mlock(P, 0, 1);
-		return (0);
-	}
-	if (!ft_must_eat(P))
-	{
-		mlock(P, 0, 1);
-		return (0);
-	}
 	ft_putnbr(current_timestamp(P));
 	write(1, " ", 1);
 	ft_putnbr(P->state.nb + 1);
@@ -80,27 +56,15 @@ int			ft_statenow(t_phil *philo, char *str)
 int			ft_death(t_phil *philo, long long time)
 {
 	struct timeval	te;
-	int				i;
 	long long		timenow;
 
-	mlock(P, 1, 0);
 	gettimeofday(&te, NULL);
-	i = -1 - P->state.nb;
 	timenow = ((te.tv_sec * 1000LL) + (te.tv_usec / 1000));
-	if (timenow - P->state.last_eat + time > P->time_to_die + 15)
+	if (timenow - P->state.last_eat + time > P->time_to_die + 5)
 	{
-		mlock(P, 0, 0);
-		P->state.eating ?
-		usleep(1000 * (P->time_to_die - (timenow - P->state.last_eat))) : 0;
-		if (check_death(P))
-			return (mlock(P, 0, 0));
 		ft_statenow(P, " died\n");
-		mlock(P, 1, 0);
-		mlock(P, 0, 0);
-		while (++i < (*P).number_philo - P->state.nb)
-			P[i].err = 0;
+		P->err = 0;
 		return (0);
 	}
-	mlock(P, 0, 0);
 	return (1);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.c                                        :+:      :+:    :+:   */
+/*   philo_two.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nepage-l <nepage-l@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 18:57:27 by nepage-l          #+#    #+#             */
-/*   Updated: 2021/02/11 13:22:31 by nepage-l         ###   ########lyon.fr   */
+/*   Updated: 2021/04/10 15:52:56 by nepage-l         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,20 @@ int			check_child(t_phil *philo)
 {
 	int i;
 
-	i = -1 - P->state.nb;
-	if (check_death(P))
-		return (0);
-	while (++i < (*P).number_philo - P->state.nb)
-		if (!ft_death(&P[i], 0))
-		{
-			P[i].must_eat = -5;
-			return (0);
-		}
-	i = -1 - P->state.nb;
-	while (i < (((*P).number_philo - P->state.nb)) && !P[i].must_eat)
-		i++;
-	if (i == ((*P).number_philo - P->state.nb))
+	while (1)
 	{
-		P->err = 0;
-		return (0);
+		i = -1;
+		while (!P[++i].must_eat && i < (*P).number_philo)
+			;
+		if (i == (*P).number_philo)
+			return (1);
+		i = -1;
+		while (++i < (*P).number_philo)
+		{
+			if (!ft_death(&P[i], 0))
+				return (0);
+		}
 	}
-	return (1);
 }
 
 void		*job(void *arg)
@@ -41,16 +37,17 @@ void		*job(void *arg)
 	t_phil *philo;
 
 	P = arg;
-	usleep(100 * P->state.nb);
 	while (1)
 	{
-		if (!ft_eat(P))
+		while (P->must_eat != 0)
 		{
-			slock(P, 0, 1);
-			slock(P, 0, 0);
-			return (NULL);
+			if (!ft_eat(P))
+			{
+				slock(P, 0, 1);
+				slock(P, 0, 0);
+				return (NULL);
+			}
 		}
-		philo->state.eating = 0;
 	}
 }
 
@@ -80,17 +77,16 @@ int			ft_threads(t_phil *philo)
 	if ((P[0].state.writesem =
 	sem_open("/sem-wmutex", O_CREAT, 0660, 1)) == SEM_FAILED)
 		return (free_all(philo, "sem init failed\n"));
+	ft_mutex_global(&philo);
 	while (++i < (*P).number_philo)
+	{
 		if (pthread_create(&threads[i], NULL, job, &P[i]) != 0)
 			return (free_all(philo, "thread init failded\n"));
-	ft_mutex_global(&philo);
-	i = -1;
-	while (++i < (*P).number_philo)
-		pthread_join(threads[i], NULL);
-	i = -1;
-	while (!P[++i].must_eat && i < (*P).number_philo - (P->state.nb))
-		;
-	if (i == (*P).number_philo - (P->state.nb))
+		pthread_detach(threads[i]);
+		usleep(50);
+	}
+	i = check_child(P);
+	if (i)
 		return (free_all(P, "Philo is bien graille\n"));
 	return (free_all(P, NULL));
 }
@@ -99,7 +95,7 @@ int			main(int ac, char **av)
 {
 	t_phil	*philo;
 
-	if (!((ac == 5 || ac == 6) && ft_atoi(av[1]) > 0))
+	if (!((ac == 5 || ac == 6) && ft_atoi(av[1]) > 1))
 		return (write(1, "Error numbers arguments\n", 24));
 	if (!(P = (t_phil *)ft_calloc(ft_atoi(av[1]) + 1, sizeof(t_phil))))
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: nepage-l <nepage-l@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:36:49 by nepage-l          #+#    #+#             */
-/*   Updated: 2021/02/10 17:36:55 by nepage-l         ###   ########lyon.fr   */
+/*   Updated: 2021/04/10 15:54:43 by nepage-l         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,11 @@ int		ft_eat(t_phil *philo)
 		return (0);
 	if (!(ft_statenow(P, " is eating\n")))
 		return (0);
-	if (!ft_death(P, P->time_to_eat))
-	{
-		P->must_eat = -5;
-		return (0);
-	}
 	P->must_eat--;
 	usleep(1000 * P->time_to_eat);
-	slock(philo, 0, 0);
-	slock(philo, 0, 0);
 	last_graille(P);
+	slock(philo, 0, 0);
+	slock(philo, 0, 0);
 	return (ft_sleep(philo));
 }
 

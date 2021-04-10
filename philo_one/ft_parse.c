@@ -6,7 +6,7 @@
 /*   By: nepage-l <nepage-l@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 18:57:27 by nepage-l          #+#    #+#             */
-/*   Updated: 2021/02/10 15:48:36 by nepage-l         ###   ########lyon.fr   */
+/*   Updated: 2021/04/10 14:23:46 by nepage-l         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int		ft_parse(int ac, char **av, t_phil **philo)
 		(*philo)[i].time_to_eat = ft_atoi(av[3]);
 		(*philo)[i].time_to_sleep = ft_atoi(av[4]);
 		(*philo)[i].number_philo = count;
-		(*philo)[i].must_eat = -1;
+		(*philo)[i].must_eat = -2;
 		if (ac == 6)
 			(*philo)[i].must_eat = ft_atoi(av[5]);
 	}

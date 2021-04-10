@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.c                                        :+:      :+:    :+:   */
+/*   philo_three.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nepage-l <nepage-l@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 18:57:27 by nepage-l          #+#    #+#             */
-/*   Updated: 2021/02/22 11:31:11 by nepage-l         ###   ########lyon.fr   */
+/*   Updated: 2021/04/07 10:55:21 by nepage-l         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int		main(int ac, char **av)
 {
 	t_parent *papa;
 
-	if (!((ac == 5 || ac == 6) && ft_atoi(av[1]) > 0))
+	if (!((ac == 5 || ac == 6) && ft_atoi(av[1]) > 1))
 		return (write(1, "Error numbers arguments\n", 24));
 	if (!(papa = (t_parent *)ft_calloc(1, sizeof(t_parent))))
 		return (0);

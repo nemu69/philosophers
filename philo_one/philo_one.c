@@ -6,7 +6,7 @@
 /*   By: nepage-l <nepage-l@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 18:57:27 by nepage-l          #+#    #+#             */
-/*   Updated: 2021/04/10 15:52:15 by nepage-l         ###   ########lyon.fr   */
+/*   Updated: 2021/04/17 15:28:07 by nepage-l         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,21 @@ int			check_child(t_phil *philo)
 	while (1)
 	{
 		i = -1;
-		while (!P[++i].must_eat && i < (*P).number_philo)
+		while (i < (*P).number_philo && !P[++i].must_eat)
 			;
 		if (i == (*P).number_philo)
+		{
+			mlock(P, 1, 1);
 			return (1);
+		}
 		i = -1;
 		while (++i < (*P).number_philo)
 		{
 			if (!ft_death(&P[i], 0))
+			{
+				mlock(P, 1, 1);
 				return (0);
+			}
 		}
 	}
 }
@@ -79,8 +85,7 @@ int			ft_threads(t_phil *philo)
 		pthread_detach(threads[i]);
 		usleep(50);
 	}
-	i = check_child(P);
-	if (i)
+	if (check_child(P))
 		return (free_all(P, "Philo is bien graille\n"));
 	return (free_all(P, NULL));
 }

@@ -6,7 +6,7 @@
 /*   By: nepage-l <nepage-l@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:36:49 by nepage-l          #+#    #+#             */
-/*   Updated: 2021/04/10 15:54:43 by nepage-l         ###   ########lyon.fr   */
+/*   Updated: 2021/04/17 15:58:45 by nepage-l         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,5 @@ int		slock(t_phil *philo, int code, int nbmut)
 	if (!nbmut)
 		code ? sem_wait(P->state.sem) :
 			sem_post(P->state.sem);
-	return (0);
+	return (1);
 }

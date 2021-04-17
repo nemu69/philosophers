@@ -6,7 +6,7 @@
 /*   By: nepage-l <nepage-l@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 18:57:27 by nepage-l          #+#    #+#             */
-/*   Updated: 2021/04/07 10:55:21 by nepage-l         ###   ########lyon.fr   */
+/*   Updated: 2021/04/17 18:38:38 by nepage-l         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,11 @@ void	*check_child(void *arg)
 	while (1)
 	{
 		if (philo->must_eat == -1)
+		{
+			slock(P, 0, 0);
+			slock(P, 0, 0);
 			exit(0);
+		}
 		if (!ft_death(P, 0))
 			exit(1);
 	}
@@ -35,8 +39,11 @@ void	*job(t_phil *philo)
 	pthread_detach(threads[0]);
 	while (1)
 	{
-		if (!ft_eat(philo))
-			return (NULL);
+		while (P->must_eat != 0)
+		{
+			if (!ft_eat(philo))
+				return (NULL);
+		}
 	}
 	return (NULL);
 }

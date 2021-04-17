@@ -6,7 +6,7 @@
 /*   By: nepage-l <nepage-l@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:36:49 by nepage-l          #+#    #+#             */
-/*   Updated: 2021/02/13 11:01:22 by nepage-l         ###   ########lyon.fr   */
+/*   Updated: 2021/04/17 17:06:26 by nepage-l         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,16 @@ int			ft_strcmp(char *s1, char *s2)
 
 int			ft_statenow(t_phil *philo, char *str)
 {
-	slock(P, 1, 1);
-	ft_putnbr(current_timestamp(P));
-	write(1, " ", 1);
-	ft_putnbr(P->state.nb + 1);
-	write(1, " ", 1);
-	ft_putstr(str);
-	!ft_strcmp(" died\n", str) ? 0 : slock(P, 0, 1);
+	if (P->must_eat != -1)
+	{
+		slock(P, 1, 1);
+		ft_putnbr(current_timestamp(P));
+		write(1, " ", 1);
+		ft_putnbr(P->state.nb + 1);
+		write(1, " ", 1);
+		ft_putstr(str);
+		!ft_strcmp(" died\n", str) ? 0 : slock(P, 0, 1);
+	}
 	return (1);
 }
 

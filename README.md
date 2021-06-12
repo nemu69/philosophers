@@ -1,17 +1,21 @@
-# philosophers
+<p align="center">
+    <img alt="42-lyon" src="https://user-images.githubusercontent.com/45235527/106354618-6ec65a00-62f3-11eb-8688-ba9e0f4e77de.jpg" />
+</p>
 
-<img src="https://user-images.githubusercontent.com/45235527/96753610-698e7080-13d0-11eb-9461-d3351c9208d7.png" width="250" height="200" />
+# Philosophers
 
-<strong>Description</strong>
+<img alt="Note" src="https://user-images.githubusercontent.com/45235527/96753610-698e7080-13d0-11eb-9461-d3351c9208d7.png" width="250" height="200" />
+
+### <strong>Description</strong>
 
 Ce projet est une introduction au bases du threading de processus, et comment travailler sur le même espace mémoire.
 Vous apprendrez comment faire des threads.
 Vous découvrirez les mutex, les semaphores, et la mémoire partagée.
 
 <p align="center" width="100%">
-  
-<img src="https://user-images.githubusercontent.com/45235527/104717704-ff187280-5729-11eb-940e-f52e2ed31e46.gif" width="33%" height="33%" /> <img src="https://user-images.githubusercontent.com/45235527/104717692-f9229180-5729-11eb-9e58-edca3bea9a58.gif" width="33%" height="33%" /> <img src="https://user-images.githubusercontent.com/45235527/104717707-ffb10900-5729-11eb-86c0-8fb81f8d2147.gif" width="33%" height="33%" />
-
+  <img alt="Philo1" src="https://user-images.githubusercontent.com/45235527/104717704-ff187280-5729-11eb-940e-f52e2ed31e46.gif" width="33%" height="33%" />
+  <img alt="Philo2" src="https://user-images.githubusercontent.com/45235527/104717692-f9229180-5729-11eb-9e58-edca3bea9a58.gif" width="33%" height="33%" />
+  <img alt="Philo3" src="https://user-images.githubusercontent.com/45235527/104717707-ffb10900-5729-11eb-86c0-8fb81f8d2147.gif" width="33%" height="33%" />
 </p>
 
 
@@ -73,7 +77,7 @@ l’affichage de sa mort.
 
 ![Sujet - Philo 1](https://user-images.githubusercontent.com/45235527/102659664-12134380-417a-11eb-9b55-7861a10e338d.PNG)
 
-Dans cette version, les règles supplémentaires seront :
+### Dans cette version, les règles supplémentaires seront :
 
 - Il y a une fourchette entre chaque philosophe, donc il y aura une fourchette à
 gauche et a droite de chaque philosophe.
@@ -84,7 +88,7 @@ devez protéger l’état des fourchettes à l’aide de mutex.
 
 ![Sujet - Philo 2](https://user-images.githubusercontent.com/45235527/102659873-69b1af00-417a-11eb-9b36-ed62e71d3654.PNG)
 
-Dans cette version, les règles supplémentaires seront :
+### Dans cette version, les règles supplémentaires seront :
 
 - Toutes les fourchettes sont au milieu de la table.
 - Elles n’ont pas d’état spécifique en mémoire, mais le nombre de fourchettes disponibles est représenté par un semaphore
@@ -93,7 +97,7 @@ Dans cette version, les règles supplémentaires seront :
 
 ![Sujet - Philo 3](https://user-images.githubusercontent.com/45235527/102659659-10e21680-417a-11eb-9d14-6c2f3b05c205.PNG)
 
-Dans cette version, les règles supplémentaires seront :
+### Dans cette version, les règles supplémentaires seront :
 
 - Toutes les fourchettes sont au milieu de la table.
 - Elles n’ont pas d’état spécifique en mémoire, mais le nombre de fourchettes disponibles est représenté par un semaphore
@@ -103,9 +107,9 @@ ne devrait pas être un philosophe.
 # Resultat 
 
 <p align="center" width="100%">
-   <img src="https://user-images.githubusercontent.com/45235527/104717704-ff187280-5729-11eb-940e-f52e2ed31e46.gif" width="60% height="50%" />
+   <img alt="Philo1 grand" src="https://user-images.githubusercontent.com/45235527/104717704-ff187280-5729-11eb-940e-f52e2ed31e46.gif" width="60%" height="50%" />
   
-   <img src="https://user-images.githubusercontent.com/45235527/104717692-f9229180-5729-11eb-9e58-edca3bea9a58.gif" width="60%" height="50%" />
+   <img alt="Philo2 grand" src="https://user-images.githubusercontent.com/45235527/104717692-f9229180-5729-11eb-9e58-edca3bea9a58.gif" width="60%" height="50%" />
    
-   <img src="https://user-images.githubusercontent.com/45235527/104717707-ffb10900-5729-11eb-86c0-8fb81f8d2147.gif" width="60%" height="50%" />
+   <img alt="Philo3 grand" src="https://user-images.githubusercontent.com/45235527/104717707-ffb10900-5729-11eb-86c0-8fb81f8d2147.gif" width="60%" height="50%" />
 </p>
